@@ -1,0 +1,1 @@
+rikai-mpv/front.lua
