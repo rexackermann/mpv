@@ -15,33 +15,39 @@
 local options = require 'mp.options'
 
 local o = {
-  save_period = 10
+     save_period = 10,
+     disabled = false
 }
 
 options.read_options(o)
 
+if o.disabled then
+     msg.verbose("stopping: autoload disabled")
+     return
+end
+
 local mp = require 'mp'
 
 local function save()
-  mp.command("write-watch-later-config")
+     mp.command("write-watch-later-config")
 end
 
 local function init()
-  if not mp.get_property_bool("seekable", true) then
-    return
-  end
+     if not mp.get_property_bool("seekable", true) then
+          return
+     end
 
-  local save_period_timer = mp.add_periodic_timer(o.save_period, save)
+     local save_period_timer = mp.add_periodic_timer(o.save_period, save)
 
-  local function pause(name, paused)
-    if paused then
-      save_period_timer:stop()
-    else
-      save_period_timer:resume()
-    end
-  end
+     local function pause(name, paused)
+          if paused then
+               save_period_timer:stop()
+          else
+               save_period_timer:resume()
+          end
+     end
 
-  mp.observe_property("pause", "bool", pause)
+     mp.observe_property("pause", "bool", pause)
 end
 
 mp.register_event("file-loaded", init)
