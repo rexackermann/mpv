@@ -1,7 +1,10 @@
--- pointer-event 1.1.1 - 2023-Jan-01
+-- pointer-event 1.2.1 - 2023-Feb-03
 -- https://github.com/christoph-heinrich/mpv-pointer-event
 --
 -- Low latency detection of single-click, double-click, long-click and dragging.
+
+-- workaround https://github.com/mpv-player/mpv/issues/11154
+mp.add_key_binding('mouse_move', nil, function() end)
 
 local msg = require('mp.msg')
 local options = require('mp.options')
@@ -14,6 +17,7 @@ local opts = {
      margin_right = 0,
      margin_top = 50,
      margin_bottom = 90,
+     ignore_left_single_long_while_window_dragging = true,
      left_single = '',
      left_double = '',
      left_long = '',
@@ -40,6 +44,16 @@ for k, v in pairs(opts) do
 end
 
 opts.long_click_time = opts.long_click_time / 1000
+
+local window_dragging_enabled = mp.get_property_bool('window-dragging')
+if window_dragging_enabled then
+     msg.warn('window dragging is enabled and can interfere with gesture detection')
+end
+
+local fullscreen, maximized, windowed = false, false, true
+local function update_windowed()
+     windowed = not (fullscreen or maximized)
+end
 
 local prop_double_time = mp.get_property_number('input-doubleclick-time', 300)
 local double_time
@@ -117,6 +131,11 @@ local function analyze_mouse(key)
      local down_start = nil
 
      local function recognized_event(fun, dx, dy)
+          if (fun == single_click or fun == long_click)
+              and mbtn == 'left' and windowed and window_dragging_enabled
+              and opts.ignore_left_single_long_while_window_dragging then
+               return
+          end
           if last_down_x >= area_x0 and last_down_x < area_x1 and
               last_down_y >= area_y0 and last_down_y < area_y1 then
                fun(dx, dy)
@@ -154,11 +173,10 @@ local function analyze_mouse(key)
           down_start = mp.get_time()
      end
 
-     local window_drag = false
      local function btn_up()
           msg.debug('btn_up')
           if not double_click_timeout:is_enabled() and long_click_timeout:is_enabled() and
-              not dragging and drag_possible and not window_drag then
+              not dragging and drag_possible then
                recognized_event(single_click)
           end
           long_click_timeout:kill()
@@ -191,30 +209,17 @@ local function analyze_mouse(key)
           local mouse = mp.get_property_native('mouse-pos')
           mouse_x, mouse_y = mouse.x, mouse.y
           msg.trace(key, mouse.x, mouse.y, mouse.hover, tab.event)
-          if tab.event == 'up' then
-               -- because of window dragging the up event can come shortly after down
-               if mp.get_time() - down_start > 0.02 then
-                    btn_up()
-               else
-                    double_click_timeout:kill()
-                    long_click_timeout:kill()
-                    window_drag = true
-               end
-          else
-               btn_down(mouse_x, mouse_y)
-               window_drag = false
-          end
+          if tab.event == 'up' then btn_up()
+          else btn_down(mouse_x, mouse_y) end
      end, { complex = true })
      mp.observe_property('mouse-pos', 'native', function(name, mouse)
+          if not mouse then return end
           msg.trace(name, mouse.x, mouse.y, mouse.hover)
-          if down_start then
-               if window_drag then btn_up()
-               else drag_to(mouse.x, mouse.y) end
-          end
+          if down_start then drag_to(mouse.x, mouse.y) end
           mouse_x, mouse_y = mouse.x, mouse.y
      end)
      if cmd_double then
-          mp.add_forced_key_binding(key .. '_dbl', 'pe_' .. mbtn .. '_dbl', function()
+          mp.add_key_binding(key .. '_dbl', 'pe_' .. mbtn .. '_dbl', function()
                -- to prevent warning about double click not being assigned
           end)
      end
@@ -248,4 +253,18 @@ mp.observe_property('input-doubleclick-time', 'number', function(name, val)
      if val then prop_double_time = val
      else prop_double_time = 300 end
      update_double_time()
+end)
+
+mp.observe_property('fullscreen', 'bool', function(name, val)
+     msg.trace(name, val)
+     if val == nil then return end
+     fullscreen = val
+     update_windowed()
+end)
+
+mp.observe_property('window-maximized', 'bool', function(name, val)
+     msg.trace(name, val)
+     if val == nil then return end
+     maximized = val
+     update_windowed()
 end)
