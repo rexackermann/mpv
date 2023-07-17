@@ -1,0 +1,13 @@
+(undo-tree-save-format-version . 1)
+"f2eb2b52ccb306413f4c71540d2976523edbce29"
+[nil nil nil nil (25780 61349 158698 939000) 0 nil]
+([nil nil ((8303 . 8304) (" " . -8303) ("s" . -8304) ("e" . -8305) ("c" . -8306) ("o" . -8307) ("n" . -8308) ("d" . -8309) ("a" . -8310) ("r" . -8311) ("y" . -8312) 8313 (t 25780 60044 398527 719000)) nil (25780 61349 242742 61000) 0 nil])
+([nil nil ((nil rear-nonsticky nil 8413 . 8414) (nil fontified nil 8358 . 8414) (8358 . 8414) 8357 (t 25780 60132 986199 680000)) nil (25780 61349 242739 957000) 0 nil])
+([nil nil ((#("Alt+j cycle secondary-sid
+Alt+J cycle secondary-sid down" 0 26 (ws-butler-chg chg fontified nil face font-lock-comment-face) 26 31 (ws-butler-chg chg fontified nil face font-lock-variable-name-face) 31 55 (ws-butler-chg chg fontified nil) 55 56 (ws-butler-chg chg rear-nonsticky nil fontified nil)) . 8358) (undo-tree-id3 . -26) (undo-tree-id4 . -55) (undo-tree-id5 . -55) (nil fontified t 8358 . 8384) (nil rear-nonsticky t 8413 . 8414)) nil (25780 61349 242738 783000) 0 nil])
+([nil nil ((#("#" 0 1 (ws-butler-chg chg fontified t face font-lock-comment-delimiter-face)) . -8430) (undo-tree-id2 . -1) 8431 (#("
+" 0 1 (fontified nil face font-lock-comment-face ws-butler-chg chg)) . 8431) (8430 . 8431) (8429 . 8431) (t 25780 60132 986199 680000) 8357) nil (25780 61349 242735 608000) 0 nil])
+([nil nil ((nil rear-nonsticky nil 8485 . 8486) (nil fontified nil 8430 . 8486) (8430 . 8486)) nil (25780 61349 242732 876000) 0 nil])
+([nil nil ((#("S" 0 1 (ws-butler-chg chg fontified t face font-lock-variable-name-face)) . -8456) (undo-tree-id0 . -1) (undo-tree-id1 . -1) 8457 (8456 . 8457)) nil (25780 61349 242713 866000) 0 nil])
+([nil current ((8456 . 8462) (t 25780 61349 246025 554000)) nil (25780 61395 372922 713000) 0 nil])
+nil
