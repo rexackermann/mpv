@@ -17,9 +17,9 @@ script-opts=ytdl_hook-ytdl_path=yt-dlp
 # required so that the 2 UIs don't fight each other
 # about scripts/modern.lua and script-opts/osc.conf
 osc=no
-# video-sync=display-resample
-# interpolation=yes
-# tscale=mitchell
+video-sync=display-resample
+interpolation=yes
+tscale=mitchell
 
 #[Idle]
 #profile-cond=p["idle-active"]
@@ -32,9 +32,8 @@ osc=no
 #osd-bar=no
 osd-playing-msg=${path}
 # uosc will draw its own window controls if you disable window border
-border=no
+border=yes
 fullscreen=yes
-geometry=0%x100%
 ##############
 # Colorspace #
 ##############
@@ -47,9 +46,9 @@ geometry=0%x100%
 #gamma-auto
 #vf=format=colorlevels=full:colormatrix=auto
 #video-output-levels=full
-# icc-profile=/var/lib/colord/icc/edid-de9290ae82f47a5d0d1a441711f083ee.icc
-#
-# profile=gpu-hq
+icc-profile=/var/lib/colord/icc/edid-de9290ae82f47a5d0d1a441711f083ee.icc
+
+profile=gpu-hq
 #glsl-shaders="~/.config/mpv/shaders/Anime4K_Darken_VeryFast.glsl"
 #glsl-shaders-append="~/.config/mpv/shaders/Anime4K_Clamp_Highlights.glsl"
 #glsl-shaders-append="~/.config/mpv/shaders/Anime4K_Restore_CNN_M.glsl"
@@ -87,12 +86,12 @@ geometry=0%x100%
 
 
 # ao=pipewire
-# pipewire-buffer=100
-#
-# vo=gpu
+pipewire-buffer=100
+
+vo=gpu
 # gpu-context=vaapi
-# hwdec=auto
-# hwdec-codecs=all
+hwdec=auto
+hwdec-codecs=all
 # framedrop=decoder
 # vd-lavc-skipframe=nonref
 # autosync=30
@@ -217,77 +216,77 @@ volume-max=200                          # maximum volume in %, everything above 
 volume=95                              # default volume, 100 = unchanged
 
 
-# ################
-# # Video Output #
-# ################
-#
-# # Active VO options are set conditionally and require my slightly modified
-# # `scripts/auto-profiles.lua` as well as `scripts/auto-profiles-functions.lua`.
-# # More information about auto-profiles in general: https://github.com/wiiaboo/mpv-scripts/blob/master/auto-profiles.lua
-# # on_battery() and dedicated_gpu() are my own functions in `scripts/auto-profiles-functions.lua`
-# # and might need to be adjusted for your system/setup.
-#
-# # Defaults for all profiles
-# tscale=oversample                      # [sharp] oversample <-> linear (triangle) <-> catmull_rom <-> mitchell <-> gaussian <-> bicubic [smooth]
-# opengl-early-flush=no
-# opengl-pbo=yes                          # "yes" is currently bugged: https://github.com/mpv-player/mpv/issues/4988
-# icc-profile-auto
-# #icc-contrast=1000                      # silence some warning because the profile is bad
-# #hwdec=yes
-#
-# [high-quality]
-# profile-desc=cond:is_high(get('width', 0), get('height', 0), get('estimated-vf-fps', 0))
-# # hanning with this radius is broken on OSX due to OpenGL driver bug
-# #scale=ewa_hanning
-# #scale-radius=3.2383154841662362
-# scale=ewa_lanczossharp
-# cscale=ewa_lanczossoft
-# dscale=mitchell
-# scale-antiring=0
-# cscale-antiring=0
-# dither-depth=auto
-# correct-downscaling=yes
-# sigmoid-upscaling=yes
-# deband=yes
-# #glsl-shaders-append="~/.mpv/shaders/KrigBilateral.glsl"
-# #glsl-shaders-append="~/.mpv/shaders/ravu-lite-r4.hook"
-# #glsl-shaders-append="~/.mpv/shaders/ravu-lite-r4.hook"
-# #glsl-shaders-append="~/.mpv/shaders/ravu-lite-r4.hook"
-#
-# [mid-quality]
-# profile-desc=cond:is_mid(get('width', 0), get('height', 0), get('estimated-vf-fps', 0))
-# scale=spline36
-# cscale=bicubic
-# dscale=mitchell
-# scale-antiring=1.0
-# cscale-antiring=1.0
-# dither-depth=auto
-# correct-downscaling=yes
-# sigmoid-upscaling=yes
-# deband=yes
-# #glsl-shaders-set=""
-#
-# [low-quality]
-# profile-desc=cond:is_low(get('width', 0), get('height', 0), get('estimated-vf-fps', 0))
-# scale=bilinear
-# cscale=bilinear
-# dscale=bilinear
-# scale-antiring=0
-# cscale-antiring=0
-# dither-depth=no
-# correct-downscaling=no
-# sigmoid-upscaling=no
-# deband=no
-# glsl-shaders-set=""
-#
-# [4K-lavc-threads]
-# profile-desc=cond:get('width', -math.huge) >= 3840
-# vd-lavc-threads=32
-#
-# [4K-lavc-threads-inverted]
-# profile-desc=cond:get('width', math.huge) < 3840
-# vd-lavc-threads=0
-#
+################
+# Video Output #
+################
+
+# Active VO options are set conditionally and require my slightly modified
+# `scripts/auto-profiles.lua` as well as `scripts/auto-profiles-functions.lua`.
+# More information about auto-profiles in general: https://github.com/wiiaboo/mpv-scripts/blob/master/auto-profiles.lua
+# on_battery() and dedicated_gpu() are my own functions in `scripts/auto-profiles-functions.lua`
+# and might need to be adjusted for your system/setup.
+
+# Defaults for all profiles
+tscale=oversample                      # [sharp] oversample <-> linear (triangle) <-> catmull_rom <-> mitchell <-> gaussian <-> bicubic [smooth]
+opengl-early-flush=no
+opengl-pbo=yes                          # "yes" is currently bugged: https://github.com/mpv-player/mpv/issues/4988
+icc-profile-auto
+#icc-contrast=1000                      # silence some warning because the profile is bad
+#hwdec=yes
+
+[high-quality]
+profile-desc=cond:is_high(get('width', 0), get('height', 0), get('estimated-vf-fps', 0))
+# hanning with this radius is broken on OSX due to OpenGL driver bug
+#scale=ewa_hanning
+#scale-radius=3.2383154841662362
+scale=ewa_lanczossharp
+cscale=ewa_lanczossoft
+dscale=mitchell
+scale-antiring=0
+cscale-antiring=0
+dither-depth=auto
+correct-downscaling=yes
+sigmoid-upscaling=yes
+deband=yes
+#glsl-shaders-append="~/.mpv/shaders/KrigBilateral.glsl"
+#glsl-shaders-append="~/.mpv/shaders/ravu-lite-r4.hook"
+#glsl-shaders-append="~/.mpv/shaders/ravu-lite-r4.hook"
+#glsl-shaders-append="~/.mpv/shaders/ravu-lite-r4.hook"
+
+[mid-quality]
+profile-desc=cond:is_mid(get('width', 0), get('height', 0), get('estimated-vf-fps', 0))
+scale=spline36
+cscale=bicubic
+dscale=mitchell
+scale-antiring=1.0
+cscale-antiring=1.0
+dither-depth=auto
+correct-downscaling=yes
+sigmoid-upscaling=yes
+deband=yes
+#glsl-shaders-set=""
+
+[low-quality]
+profile-desc=cond:is_low(get('width', 0), get('height', 0), get('estimated-vf-fps', 0))
+scale=bilinear
+cscale=bilinear
+dscale=bilinear
+scale-antiring=0
+cscale-antiring=0
+dither-depth=no
+correct-downscaling=no
+sigmoid-upscaling=no
+deband=no
+glsl-shaders-set=""
+
+[4K-lavc-threads]
+profile-desc=cond:get('width', -math.huge) >= 3840
+vd-lavc-threads=32
+
+[4K-lavc-threads-inverted]
+profile-desc=cond:get('width', math.huge) < 3840
+vd-lavc-threads=0
+
 
 ###################################
 # Protocol Specific Configuration #
