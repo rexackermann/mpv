@@ -49,11 +49,11 @@ function skippp()
 		      local title_str ="chapter-list/" .. chapter_num .. "/title"
       		local title = mp.get_property(title_str)
           -- print("Chapter Title ".. i.. ": ".. title)
-          local str1 = "Sponsor"
+          local str1 = "SponsorBlock"
           -- print(chapter_count .. "eof")
           if string_contains(title, str1) then
-            print(chapter_num)
-            print(chapter_count)
+            -- print(chapter_num)
+            -- print(chapter_count)
             matched_num = chapter_num + 1
             -- print("str2 is contained in str1")
             if matched_num == chapter_count then
@@ -67,7 +67,7 @@ function skippp()
             -- print("str2 is not contained in str1")
 end
   else
-      print("No chapters found.")
+      -- print("No chapters found.")
   end
 end
 
